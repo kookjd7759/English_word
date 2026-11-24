@@ -90,7 +90,7 @@ function render() {
 
 for (const topic of topics) {
   const link = element('a', '📖 ' + topic.file);
-  link.hash = encodeURIComponent(topic.file);
+  link.href = '#' + encodeURIComponent(topic.file);
   nav.append(link);
 }
 
