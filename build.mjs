@@ -46,7 +46,9 @@ const topics = (await Promise.all(files.map(async file => {
   return { file, title, sections };
 })));
 
-await mkdir(output, { recursive: true });
-await cp(new URL('site/', root), output, { recursive: true });
-await writeFile(new URL('words.js', output), `window.wordTopics = ${JSON.stringify(topics)};\n`);
+for (const destination of [output, new URL('study/', output)]) {
+  await mkdir(destination, { recursive: true });
+  await cp(new URL('site/', root), destination, { recursive: true });
+  await writeFile(new URL('words.js', destination), `window.wordTopics = ${JSON.stringify(topics)};\n`);
+}
 console.log(`Built ${topics.length} topics in _site/`);
