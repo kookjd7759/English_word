@@ -44,7 +44,7 @@ const topics = (await Promise.all(files.map(async file => {
   const name = file.replace(/\.md$/i, '').trim();
   const title = name.replace(/^\d+[.)]\s*/, '') || [name, sections[0]?.title].filter(Boolean).join(' ');
   return { file, title, sections };
-}))).filter(topic => topic.sections.length);
+})));
 
 await mkdir(output, { recursive: true });
 await cp(new URL('site/', root), output, { recursive: true });

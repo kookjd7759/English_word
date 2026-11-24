@@ -70,3 +70,8 @@ td span:not([hidden]) { display: block; }
   .sidebar { position: static; }
   td, th { padding-inline: .7rem; }
 }
+
+#topics { display: grid; gap: .3rem; }
+#topics a { color: var(--muted); text-decoration: none; padding: .5rem; border-radius: .5rem; }
+#topics a:hover, #topics a[aria-current] { background: #343964; color: white; }
+@media (max-width: 43rem) { #topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }

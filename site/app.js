@@ -1,5 +1,6 @@
 const topics = window.wordTopics ?? [];
-const topicSelect = document.querySelector('#topic');
+const nav = document.querySelector('#topics');
+let currentTopic;
 const sectionSelect = document.querySelector('#section');
 const search = document.querySelector('#search');
 const study = document.querySelector('#study');
@@ -14,7 +15,7 @@ function element(tag, text) {
 }
 
 function loadTopic() {
-  const topic = topics[topicSelect.selectedIndex];
+  const topic = currentTopic;
   sectionSelect.replaceChildren(new Option('전체 소주제', ''));
   topic?.sections.forEach((section, index) => {
     sectionSelect.add(new Option(section.title || '단어', String(index)));
@@ -24,7 +25,7 @@ function loadTopic() {
 }
 
 function render() {
-  const topic = topics[topicSelect.selectedIndex];
+  const topic = currentTopic;
   const query = search.value.trim().toLocaleLowerCase();
   const hide = study.getAttribute('aria-pressed') === 'true';
   content.replaceChildren();
@@ -87,14 +88,27 @@ function render() {
   if (topic && !visibleSections) content.append(element('p', '표시할 단어가 없어요.'));
 }
 
-topics.forEach(topic => topicSelect.add(new Option(topic.title, topic.file)));
-topicSelect.disabled = sectionSelect.disabled = search.disabled = study.disabled = !topics.length;
-topicSelect.addEventListener('change', loadTopic);
+for (const topic of topics) {
+  const link = element('a', '📖 ' + topic.file);
+  link.hash = encodeURIComponent(topic.file);
+  nav.append(link);
+}
+
+function openFile() {
+  currentTopic = topics.find(topic => '#' + encodeURIComponent(topic.file) === location.hash) ?? topics[0];
+  for (const link of nav.children) {
+    if (link.hash === '#' + encodeURIComponent(currentTopic.file)) link.setAttribute('aria-current', 'page');
+    else link.removeAttribute('aria-current');
+  }
+  loadTopic();
+}
+window.addEventListener('hashchange', openFile);
 sectionSelect.addEventListener('change', render);
 search.addEventListener('input', render);
 study.addEventListener('click', () => {
   const hide = study.getAttribute('aria-pressed') !== 'true';
   study.setAttribute('aria-pressed', String(hide));
+  study.textContent = hide ? '영어 다시 표시' : '영어 가리기';
   render();
 });
-loadTopic();
+openFile();
