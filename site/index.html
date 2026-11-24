@@ -9,9 +9,10 @@
   <script src="./app.js" defer></script>
 </head>
 <body>
-  <header class="masthead"><div class="wrap"><h1>영어 단어장</h1></div></header>
+  <header class="masthead"><div class="wrap"><h1><span class="mark" aria-hidden="true">Aa</span> 영어 단어장</h1></div></header>
   <main class="wrap layout">
     <aside class="sidebar">
+      <h2 class="side-title">단어 파일</h2>
       <nav id="topics" aria-label="단어 파일"></nav>
       <label for="section">소주제</label>
       <select id="section"></select>
@@ -20,6 +21,7 @@
       <header class="topic-header">
         <h2 id="title"></h2>
         <span id="count" role="status"></span>
+        <button id="practice" type="button">카드로 복습 ↗</button>
       </header>
       <div class="toolbar">
         <input id="search" type="search" aria-label="단어 검색" placeholder="한국어 또는 영어 검색">
@@ -28,5 +30,10 @@
       <div id="content"></div>
     </article>
   </main>
+  <dialog id="cards" aria-labelledby="deck-title">
+    <header class="deck-head"><h2 id="deck-title"></h2><button id="close-deck" aria-label="복습 닫기">✕</button></header>
+    <button id="flash" aria-describedby="card-hint"><small id="side"></small><strong id="term"></strong><span id="card-hint">눌러서 뒤집기</span></button>
+    <footer><button id="prev" aria-label="이전 카드">←</button><output id="position"></output><button id="next" aria-label="다음 카드">→</button></footer>
+  </dialog>
 </body>
 </html>

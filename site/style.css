@@ -1,19 +1,19 @@
 :root {
-  color-scheme: dark;
+  color-scheme: light;
   font-family: "Segoe UI", "Malgun Gothic", system-ui, sans-serif;
-  color: #f0f3fc;
-  background: #101423;
-  --panel: #191f32;
-  --line: #333d58;
-  --muted: #b5bfd8;
-  --accent: #b7baff;
+  color: #223a34;
+  background: #f7f6ef;
+  --panel: #fffefa;
+  --line: #d7ded3;
+  --muted: #52665d;
+  --accent: #226349;
 }
 
 * { box-sizing: border-box; }
 body { margin: 0; line-height: 1.6; }
 .wrap { width: min(70rem, calc(100% - 2rem)); margin-inline: auto; }
 .masthead {
-  background: #181d30;
+  background: #173f34;
   border-bottom: 1px solid var(--line);
   padding-block: 1rem;
 }
@@ -51,7 +51,7 @@ select { width: 100%; }
 input { flex: 1 1 14rem; min-width: 0; }
 input::placeholder { color: var(--muted); }
 button, select { cursor: pointer; }
-button:hover, button[aria-pressed="true"] { background: #343964; border-color: var(--accent); }
+button:hover, button[aria-pressed="true"] { background: #dcecdf; border-color: var(--accent); }
 :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 section { background: var(--panel); border: 1px solid var(--line); border-radius: 1rem; overflow: hidden; }
 section + section { margin-top: 1rem; }
@@ -60,7 +60,7 @@ section p { padding: 0 1rem 1rem; color: var(--muted); }
 table { border-collapse: collapse; width: 100%; table-layout: fixed; }
 th, td { text-align: left; padding: .65rem 1rem; overflow-wrap: anywhere; }
 th:first-child { width: 42%; }
-th { background: #212941; color: var(--muted); font-size: .875rem; }
+th { background: #f1f4ed; color: var(--muted); font-size: .875rem; }
 td { border-top: 1px solid var(--line); white-space: pre-line; vertical-align: top; }
 td span:not([hidden]) { display: block; }
 .reveal { color: var(--accent); font-size: .875rem; min-height: 2.25rem; padding: .3rem .65rem; }
@@ -73,5 +73,33 @@ td span:not([hidden]) { display: block; }
 
 #topics { display: grid; gap: .3rem; }
 #topics a { color: var(--muted); text-decoration: none; padding: .5rem; border-radius: .5rem; }
-#topics a:hover, #topics a[aria-current] { background: #343964; color: white; }
+#topics a:hover, #topics a[aria-current] { background: #dcecdf; color: #173f34; }
 @media (max-width: 43rem) { #topics { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+
+.masthead { color: #faf8ec; }
+.masthead h1 { display: flex; align-items: center; gap: .75rem; }
+.mark { display: grid; place-items: center; width: 2.35rem; height: 2.35rem; border-radius: .6rem; background: #e6eeb3; color: #173f34; font: bold 1.35rem Georgia, serif; }
+.side-title { font-size: 1rem; margin-bottom: .35rem; }
+.topic-header { padding: 1.6rem 0; border-bottom: 2px solid #244e3b; align-items: center; }
+#title, #deck-title, section h3 { font-family: Georgia, "Malgun Gothic", serif; }
+#title { font-weight: 500; letter-spacing: -.035em; }
+#practice { margin-left: auto; background: #20523f; color: white; }
+button:disabled { opacity: .45; cursor: default; }
+section h3 { font-size: 1.4rem; }
+td [lang=en] { font: 500 1.13rem/1.55 Georgia, serif; }
+tbody tr:hover { background: #f7f8f1; }
+#topics a[aria-current] { box-shadow: inset 3px 0 #397051; font-weight: bold; }
+dialog { width: min(34rem, 92vw); max-height: 90dvh; padding: clamp(1rem, 4vw, 2rem); border: 1px solid var(--line); border-radius: 1.25rem; color: inherit; background: var(--panel); }
+dialog::backdrop { background: rgb(17 40 32 / .58); }
+.deck-head, dialog footer { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+#deck-title { font-size: 1.65rem; }
+#flash { display: grid; align-content: space-between; gap: 1.5rem; width: 100%; min-height: 16rem; margin: 1.25rem 0; padding: 1.5rem; background: #f4f3e7; color: #223a34; }
+#flash.flipped { background: #e3efe2; }
+#term { white-space: pre-line; overflow-wrap: anywhere; font-size: clamp(1.4rem, 4vw, 2.35rem); }
+#side, #card-hint, #position { color: var(--muted); font-size: .85rem; }
+@media (max-width: 43rem) {
+  #topics { display: flex; overflow-x: auto; padding: .2rem; }
+  #topics a { flex: none; }
+  .sidebar { min-width: 0; }
+  .topic-header { padding: .75rem 0; }
+}

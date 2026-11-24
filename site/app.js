@@ -24,13 +24,58 @@ function loadTopic() {
   render();
 }
 
+const dialog = document.querySelector('#cards');
+const practice = document.querySelector('#practice');
+const flash = document.querySelector('#flash');
+const previous = document.querySelector('#prev');
+const next = document.querySelector('#next');
+let deck = [];
+let cardIndex = 0;
+let flipped = false;
+
+function drawCard() {
+  const [prompt, ...answers] = deck[cardIndex];
+  document.querySelector('#side').textContent = flipped ? '영어' : '문제';
+  document.querySelector('#term').textContent = flipped ? answers.join(' | ') : prompt;
+  flash.classList.toggle('flipped', flipped);
+  document.querySelector('#position').textContent = (cardIndex + 1) + ' / ' + deck.length;
+  previous.disabled = cardIndex === 0;
+  next.disabled = cardIndex === deck.length - 1;
+}
+
+function moveCard(step) {
+  cardIndex = Math.max(0, Math.min(deck.length - 1, cardIndex + step));
+  flipped = false;
+  drawCard();
+}
+
+practice.onclick = () => {
+  cardIndex = 0;
+  flipped = false;
+  document.querySelector('#deck-title').textContent = currentTopic.title;
+  drawCard();
+  dialog.showModal();
+  flash.focus();
+};
+flash.onclick = () => { flipped = !flipped; drawCard(); };
+previous.onclick = () => moveCard(-1);
+next.onclick = () => moveCard(1);
+document.querySelector('#close-deck').onclick = () => dialog.close();
+dialog.onkeydown = event => {
+  if (event.key === 'ArrowRight' || event.key === 'ArrowLeft') {
+    event.preventDefault();
+    moveCard(event.key === 'ArrowRight' ? 1 : -1);
+  }
+};
+
 function render() {
+  deck = [];
   const topic = currentTopic;
   const query = search.value.trim().toLocaleLowerCase();
   const hide = study.getAttribute('aria-pressed') === 'true';
   content.replaceChildren();
   title.textContent = topic?.title ?? '등록된 주제가 없어요';
-  let total = 0;
+  
   let visibleSections = 0;
 
   topic?.sections.forEach((section, index) => {
@@ -38,7 +83,7 @@ function render() {
     const rows = section.rows.filter(row => row.some(cell => cell.toLocaleLowerCase().includes(query)));
     const showNote = section.note && !hide && (!query || rows.length || section.note.toLocaleLowerCase().includes(query));
     if (!rows.length && !showNote) return;
-    total += rows.filter(row => row.length > 1).length;
+    deck.push(...rows.filter(row => row.length > 1));
     visibleSections += 1;
     const group = element('section', '');
     const heading = element('h3', section.title || '단어');
@@ -84,7 +129,8 @@ function render() {
     if (rows.length) group.append(table);
     content.append(group);
   });
-  count.textContent = topic ? `단어 ${total}개` : '';
+  practice.disabled = !deck.length;
+  count.textContent = topic ? `단어 ${deck.length}개` : '';
   if (topic && !visibleSections) content.append(element('p', '표시할 단어가 없어요.'));
 }
 
@@ -95,6 +141,7 @@ for (const topic of topics) {
 }
 
 function openFile() {
+  if (dialog.open) dialog.close();
   currentTopic = topics.find(topic => '#' + encodeURIComponent(topic.file) === location.hash) ?? topics[0];
   for (const link of nav.children) {
     if (link.hash === '#' + encodeURIComponent(currentTopic.file)) link.setAttribute('aria-current', 'page');
