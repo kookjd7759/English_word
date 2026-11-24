@@ -135,7 +135,7 @@ function render() {
 }
 
 for (const topic of topics) {
-  const link = element('a', '📖 ' + topic.file);
+  const link = element('a', '📖 ' + topic.file.replace(/\.md$/i, ''));
   link.href = '#' + encodeURIComponent(topic.file);
   nav.append(link);
 }
