@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>영어 단어장</title>
+  <link rel="stylesheet" href="./style.css">
+  <script src="./words.js" defer></script>
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="masthead"><div class="wrap"><h1>영어 단어장</h1></div></header>
+  <main class="wrap layout">
+    <aside class="sidebar">
+      <label for="topic">주제</label>
+      <select id="topic"></select>
+      <label for="section">소주제</label>
+      <select id="section"></select>
+    </aside>
+    <article>
+      <header class="topic-header">
+        <h2 id="title"></h2>
+        <span id="count" role="status"></span>
+      </header>
+      <div class="toolbar">
+        <input id="search" type="search" aria-label="단어 검색" placeholder="한국어 또는 영어 검색">
+        <button id="study" type="button" aria-pressed="false">영어 가리기</button>
+      </div>
+      <div id="content"></div>
+    </article>
+  </main>
+</body>
+</html>
