@@ -1,3 +1,4 @@
+import { createHash } from 'node:crypto';
 import { cp, mkdir, readdir, readFile, writeFile } from 'node:fs/promises';
 
 const root = new URL('./', import.meta.url);
@@ -50,5 +51,13 @@ for (const destination of [output, new URL('study/', output)]) {
   await mkdir(destination, { recursive: true });
   await cp(new URL('site/', root), destination, { recursive: true });
   await writeFile(new URL('words.js', destination), `window.wordTopics = ${JSON.stringify(topics)};\n`);
+  const index = new URL('index.html', destination);
+  let html = await readFile(index, 'utf8');
+  for (const asset of ['style.css', 'app.js', 'words.js']) {
+    const bytes = await readFile(new URL(asset, destination));
+    const version = createHash('sha256').update(bytes).digest('hex').slice(0, 12);
+    html = html.replace('./' + asset, './' + asset + '?v=' + version);
+  }
+  await writeFile(index, html);
 }
 console.log(`Built ${topics.length} topics in _site/`);
